@@ -1,15 +1,35 @@
+import {useEffect, useState} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {useContext} from 'react';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
-import {Countries, Cities, Places, Trips, Wishlists} from '../components';
-import {themeContext} from '../theme';
-import {RootStackParamList} from '../types';
+import {
+  Countries,
+  Cities,
+  Places,
+  Trips,
+  Wishlists,
+  Login,
+  Registration,
+} from '../components';
+import {colors} from '../theme';
+import {RootStackParamList, UnauthParamList} from '../types';
+import {checkTokenValidity} from '../api';
 
 export const TabNavigation = () => {
   const Tab = createBottomTabNavigator<RootStackParamList>();
-  const colors = useContext(themeContext);
+  const UnauthTab = createBottomTabNavigator<UnauthParamList>();
 
-  return (
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const isValid = await checkTokenValidity();
+      setIsAuthenticated(isValid);
+    };
+
+    checkAuth();
+  }, []);
+
+  return isAuthenticated ? (
     <Tab.Navigator
       initialRouteName="Trips"
       screenOptions={{
@@ -65,7 +85,54 @@ export const TabNavigation = () => {
           headerShown: false,
         }}
       />
-      {/* <Tab.Screen
+    </Tab.Navigator>
+  ) : (
+    <UnauthTab.Navigator
+      initialRouteName="Login"
+      screenOptions={{
+        tabBarActiveBackgroundColor: colors.backgroundAccent,
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveBackgroundColor: colors.backgroundMain,
+        tabBarInactiveTintColor: colors.light,
+        headerStyle: {backgroundColor: colors.backgroundAccent},
+        headerTintColor: colors.light,
+      }}>
+      <UnauthTab.Screen
+        name="Login"
+        component={Login}
+        options={{
+          tabBarIcon: ({color}) => (
+            <FontAwesome6
+              name="right-to-bracket"
+              iconStyle="solid"
+              size={20}
+              color={color}
+            />
+          ),
+          headerShown: false,
+        }}
+      />
+      <UnauthTab.Screen
+        name="Registration"
+        component={Registration}
+        options={{
+          tabBarIcon: ({color}) => (
+            <FontAwesome6
+              name="address-card"
+              iconStyle="solid"
+              size={20}
+              color={color}
+            />
+          ),
+          headerShown: false,
+        }}
+      />
+    </UnauthTab.Navigator>
+  );
+};
+
+{
+  /* <Tab.Screen
         name="Book" // чтобы пробросить дочерний роут
         component={BookNavigation}
         options={{tabBarItemStyle: {display: 'none'}, headerShown: false}}
@@ -89,7 +156,5 @@ export const TabNavigation = () => {
         name="MostRededAuthors" // чтобы пробросить дочерний роут
         component={CardListMostRededAuthors}
         options={{tabBarItemStyle: {display: 'none'}, headerShown: false}}
-      /> */}
-    </Tab.Navigator>
-  );
-};
+      /> */
+}

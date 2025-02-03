@@ -1,5 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import Config from 'react-native-config';
 import {HTTPError} from '../types';
+import {getToken, saveToken} from './utils';
 
 export const handleError = (resJson: any): never => {
   const error = new Error(
@@ -27,11 +28,10 @@ export const fetcher = async <T>({
   formData,
   token,
 }: FetcherProps): Promise<T> => {
-  const refreshToken = getCookie('refreshToken');
-  const accessToken = token || getCookie('accessToken');
+  const {refreshToken, accessToken: ATFromStorage} = await getToken();
+  const accessToken = token || ATFromStorage;
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/${url}`, {
-    next: {revalidate: false},
+  const res = await fetch(`${Config.BACKEND_URL}/${url}`, {
     method: method || 'GET',
     ...(!!body && {body: JSON.stringify(body)}),
     ...(!!formData && {body: formData}),
@@ -45,16 +45,13 @@ export const fetcher = async <T>({
   const resJson = await res.json();
 
   if (resJson.statusCode === 401 && refreshToken) {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/refresh-token`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({refreshToken}),
+    const response = await fetch(`${Config.BACKEND_URL}/auth/refresh-token`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+      body: JSON.stringify({refreshToken}),
+    });
 
     if (response.ok) {
       const {
@@ -65,13 +62,11 @@ export const fetcher = async <T>({
       } = await response.json();
 
       if (!!newAccessToken && !!newRefreshToken) {
-        setCookie('accessToken', newAccessToken, {
-          maxAge: accessTokenExpires - 10,
-          path: '/',
-        });
-        setCookie('refreshToken', newRefreshToken, {
-          maxAge: refreshTokenExpires - 10,
-          path: '/',
+        saveToken({
+          accessToken: newAccessToken,
+          refreshToken: newRefreshToken,
+          accessTokenExpires,
+          refreshTokenExpires,
         });
 
         return fetcher({url, method, body, formData, token: newAccessToken});

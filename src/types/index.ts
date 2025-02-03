@@ -59,4 +59,4 @@ export {
   type SearchType,
   type SearchPlaceNestResult,
 } from './search';
-export {type RootStackParamList} from './navigation-type';
+export {type RootStackParamList, type UnauthParamList} from './navigation-type';
