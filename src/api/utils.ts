@@ -1,5 +1,6 @@
 import {Alert} from 'react-native';
 import RNSecureStorage from 'rn-secure-storage';
+import queryString from 'query-string';
 
 type Tokens = {
   accessToken: string;
@@ -18,12 +19,12 @@ export const saveToken = async ({
   await RNSecureStorage.setItem('refreshToken', refreshToken, {});
   await RNSecureStorage.setItem(
     'accessTokenExpires',
-    (Date.now() + accessTokenExpires).toString(),
+    (Date.now() + accessTokenExpires * 1000).toString(),
     {},
   );
   await RNSecureStorage.setItem(
     'refreshTokenExpires',
-    (Date.now() + refreshTokenExpires).toString(),
+    (Date.now() + refreshTokenExpires * 1000).toString(),
     {},
   );
 };
@@ -71,23 +72,23 @@ export const checkTokenValidity = async () => {
     Date.now() >= Number(accessTokenExpires)
   ) {
     await RNSecureStorage.removeItem('accessToken');
-    return false;
   }
 
   return true;
 };
 
-export const handleDeepLink = (event: {url: string}) => {
+export const handleDeepLink = (
+  event: {url: string},
+  setAuthStatus: (value: boolean) => void,
+) => {
   const {url} = event;
 
-  console.log(url);
-
   if (url.startsWith('myapp://auth-success')) {
-    const params = new URLSearchParams(url.split('?')[1]);
-    const accessToken = params.get('accessToken');
-    const accessTokenExpires = Number(params.get('accessTokenExpires') || 1);
-    const refreshToken = params.get('refreshToken');
-    const refreshTokenExpires = Number(params.get('refreshTokenExpires') || 1);
+    const queryParams = queryString.parse(url.split('?')[1]);
+    const accessToken = queryParams.accessToken as string;
+    const accessTokenExpires = Number(queryParams.accessTokenExpires || 1);
+    const refreshToken = queryParams.refreshToken as string;
+    const refreshTokenExpires = Number(queryParams.refreshTokenExpires || 1);
 
     if (accessToken && refreshToken)
       saveToken({
@@ -96,6 +97,7 @@ export const handleDeepLink = (event: {url: string}) => {
         refreshToken,
         refreshTokenExpires,
       });
+    setAuthStatus(true);
   } else if (url.startsWith('myapp://error')) {
     const errorMessage = decodeURIComponent(url.split('=')[1]);
     Alert.alert('Error', errorMessage);

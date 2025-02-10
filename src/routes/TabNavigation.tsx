@@ -1,4 +1,5 @@
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
+import {Linking} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 import {
@@ -12,24 +13,32 @@ import {
 } from '../components';
 import {colors} from '../theme';
 import {RootStackParamList, UnauthParamList} from '../types';
-import {checkTokenValidity} from '../api';
+import {useContextActions, useContextValues} from '../hooks';
+import {handleDeepLink} from '../api';
+import {CountryInnerNavigation} from './CountryInnerNavigation';
 
 export const TabNavigation = () => {
+  const {isAuth} = useContextValues();
+  const {setAuthStatus} = useContextActions();
+
   const Tab = createBottomTabNavigator<RootStackParamList>();
   const UnauthTab = createBottomTabNavigator<UnauthParamList>();
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
   useEffect(() => {
-    const checkAuth = async () => {
-      const isValid = await checkTokenValidity();
-      setIsAuthenticated(isValid);
-    };
+    const subscription = Linking.addEventListener('url', event =>
+      handleDeepLink(event, setAuthStatus),
+    );
 
-    checkAuth();
+    Linking.getInitialURL().then(url => {
+      if (url) handleDeepLink({url}, setAuthStatus);
+    });
+
+    return () => {
+      subscription.remove();
+    };
   }, []);
 
-  return isAuthenticated ? (
+  return isAuth ? (
     <Tab.Navigator
       initialRouteName="Trips"
       screenOptions={{
@@ -54,6 +63,11 @@ export const TabNavigation = () => {
           ),
           headerShown: false,
         }}
+      />
+      <Tab.Screen
+        name="CountryNavigation" // чтобы пробросить дочерний роут
+        component={CountryInnerNavigation}
+        options={{tabBarItemStyle: {display: 'none'}, headerShown: false}}
       />
       <Tab.Screen
         name="Trips"

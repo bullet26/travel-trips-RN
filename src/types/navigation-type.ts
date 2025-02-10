@@ -1,6 +1,7 @@
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+
 export type RootStackParamList = {
-  // Book: {screen: string; params: {id: string}};
-  // Author: {id: string};
+  CountryNavigation: {screen: string; params: {id: string | number}};
   Trips: undefined;
   Countries: undefined;
   Wishlists: undefined;
@@ -11,12 +12,31 @@ export type UnauthParamList = {
   Registration: undefined;
 };
 
-// export type BookStackParamList = {
-//   BookPlot: {id: string};
-//   BookDetail: {id: string};
-//   Author: {id: string};
-//   BookBySpecificDate: {year: string};
-//   BookByTag: {id: string};
-// };
+export type CountryStackParamList = {
+  Country: {id: string | number};
+  City: {id: string | number};
+  Place: {id: string | number};
+};
 
-//   Login: undefined;
+export type CountriesProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Countries'
+>;
+
+export type CountryProps = NativeStackScreenProps<
+  CountryStackParamList,
+  'Country',
+  'id'
+>;
+
+export type CityProps = NativeStackScreenProps<
+  CountryStackParamList,
+  'City',
+  'id'
+>;
+
+export type PlaceProps = NativeStackScreenProps<
+  CountryStackParamList,
+  'Place',
+  'id'
+>;

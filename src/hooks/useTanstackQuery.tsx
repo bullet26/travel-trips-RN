@@ -1,12 +1,12 @@
-import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
-import { fetcher } from 'api'
+import {useQuery, UseQueryOptions, UseQueryResult} from '@tanstack/react-query';
+import {fetcher} from '../api';
 
 type UseTanstackQueryProps<T> = {
-  url: string
-  queryKey: string[]
-  options?: UseQueryOptions<T>
-  enabled?: boolean
-}
+  url: string;
+  queryKey: string[];
+  options?: UseQueryOptions<T>;
+  enabled?: boolean;
+};
 
 export const useTanstackQuery = <T,>({
   url,
@@ -16,8 +16,8 @@ export const useTanstackQuery = <T,>({
 }: UseTanstackQueryProps<T>): UseQueryResult<T> => {
   return useQuery<T>({
     queryKey,
-    queryFn: () => fetcher<T>({ url, method: 'GET' }),
+    queryFn: () => fetcher<T>({url, method: 'GET'}),
     enabled,
     ...options,
-  })
-}
+  });
+};

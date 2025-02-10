@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import {HTTPError, ILoginUser, NestAuthTokens} from '../../types';
 import {fetcher, saveToken} from '../../api';
 import {colors} from '../../theme';
+import {useContextActions} from '../../hooks';
 
 const schema = yup
   .object({
@@ -26,6 +27,8 @@ export const LoginForm = () => {
     resolver: yupResolver(schema),
   });
 
+  const {setAuthStatus} = useContextActions();
+
   const onSubmit: SubmitHandler<ILoginUser> = async data => {
     try {
       const response = await fetcher<NestAuthTokens>({
@@ -33,13 +36,14 @@ export const LoginForm = () => {
         method: 'POST',
         body: data,
       });
-      console.log(response);
 
       if (!!response?.accessToken) {
         saveToken(response);
+        setAuthStatus(true);
       }
     } catch (error) {
       Alert.alert('Error', (error as HTTPError).message);
+      setAuthStatus(false);
     }
   };
 

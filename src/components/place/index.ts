@@ -1,1 +1,1 @@
-export {Places} from './Places';
+export {Place} from './Place';

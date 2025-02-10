@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import {ICreateUser, HTTPError, NestAuthTokens} from '../../types';
 import {fetcher, saveToken} from '../../api';
 import {colors} from '../../theme';
+import {useContextActions} from '../../hooks';
 
 const schema = yup
   .object({
@@ -28,6 +29,8 @@ export const RegistrationForm = () => {
     resolver: yupResolver(schema),
   });
 
+  const {setAuthStatus} = useContextActions();
+
   const onSubmit: SubmitHandler<ICreateUser> = async data => {
     try {
       const response = await fetcher<NestAuthTokens>({
@@ -38,9 +41,11 @@ export const RegistrationForm = () => {
 
       if (!!response?.accessToken) {
         saveToken(response);
+        setAuthStatus(true);
       }
     } catch (error) {
       Alert.alert('Error', (error as HTTPError).message);
+      setAuthStatus(false);
     }
   };
 
