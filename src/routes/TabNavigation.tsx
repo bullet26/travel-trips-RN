@@ -2,15 +2,7 @@ import {useEffect} from 'react';
 import {Linking} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
-import {
-  Countries,
-  Cities,
-  Places,
-  Trips,
-  Wishlists,
-  Login,
-  Registration,
-} from '../components';
+import {Countries, Trips, Wishlists, Login, Registration} from '../components';
 import {colors} from '../theme';
 import {RootStackParamList, UnauthParamList} from '../types';
 import {useContextActions, useContextValues} from '../hooks';
@@ -144,31 +136,3 @@ export const TabNavigation = () => {
     </UnauthTab.Navigator>
   );
 };
-
-{
-  /* <Tab.Screen
-        name="Book" // чтобы пробросить дочерний роут
-        component={BookNavigation}
-        options={{tabBarItemStyle: {display: 'none'}, headerShown: false}}
-      />
-      <Tab.Screen
-        name="BookBySpecificDate" // чтобы пробросить дочерний роут
-        component={BooksByDate}
-        options={{tabBarItemStyle: {display: 'none'}, headerShown: false}}
-      />
-      <Tab.Screen
-        name="BookByTag" // чтобы пробросить дочерний роут
-        component={BooksByTag}
-        options={{tabBarItemStyle: {display: 'none'}, headerShown: false}}
-      />
-      <Tab.Screen
-        name="Author" // чтобы пробросить дочерний роут
-        component={Author}
-        options={{tabBarItemStyle: {display: 'none'}, headerShown: false}}
-      />
-      <Tab.Screen
-        name="MostRededAuthors" // чтобы пробросить дочерний роут
-        component={CardListMostRededAuthors}
-        options={{tabBarItemStyle: {display: 'none'}, headerShown: false}}
-      /> */
-}

@@ -53,7 +53,6 @@ export {
 } from './countries';
 export {type ICreateCity, type IUpdateCity, type CityNest} from './cities';
 export {type HTTPError} from './error';
-export {type IDParams} from './general';
 export {
   type SearchNestResult,
   type SearchType,
@@ -67,4 +66,6 @@ export {
   type CountryProps,
   type CityProps,
   type PlaceProps,
+  type TagsProps,
+  type TagProps,
 } from './navigation-type';

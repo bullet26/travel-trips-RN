@@ -1,4 +1,7 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
 
 export type RootStackParamList = {
   CountryNavigation: {screen: string; params: {id: string | number}};
@@ -16,6 +19,8 @@ export type CountryStackParamList = {
   Country: {id: string | number};
   City: {id: string | number};
   Place: {id: string | number};
+  Tags: undefined;
+  Tag: {id: string | number};
 };
 
 export type CountriesProps = NativeStackScreenProps<
@@ -38,5 +43,13 @@ export type CityProps = NativeStackScreenProps<
 export type PlaceProps = NativeStackScreenProps<
   CountryStackParamList,
   'Place',
+  'id'
+>;
+
+export type TagsProps = NativeStackScreenProps<CountryStackParamList, 'Tags'>;
+
+export type TagProps = NativeStackScreenProps<
+  CountryStackParamList,
+  'Tag',
   'id'
 >;

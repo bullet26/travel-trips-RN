@@ -1,30 +1,30 @@
-import { PlaceNest } from 'types'
+import {PlaceNest} from '../types';
 
 export interface IAddPlace {
-  placeId: number
+  placeId: number;
 }
 
 export interface ICreateTripsDay {
-  tripId: number
-  date: Date
+  tripId: number;
+  date: Date;
 }
 
-export type IUpdateTripsDay = Partial<ICreateTripsDay>
+export type IUpdateTripsDay = Partial<ICreateTripsDay>;
 
 export interface IMovePlaceToUnassignedPlaces {
-  placeId: number
-  unassignedPlacesId: number
+  placeId: number;
+  unassignedPlacesId: number;
 }
 
 export interface IMovePlaceToTripDay {
-  placeId: number
-  tripDayId: number
+  placeId: number;
+  tripDayId: number;
 }
 
 export interface TripDayNest extends ICreateTripsDay {
-  createdAt: Date
-  date: Date
-  id: number
-  places: Pick<PlaceNest, 'id' | 'name' | 'images'>[]
-  updatedAt: Date
+  createdAt: Date;
+  date: Date;
+  id: number;
+  places: Pick<PlaceNest, 'id' | 'name' | 'images'>[];
+  updatedAt: Date;
 }

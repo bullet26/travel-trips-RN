@@ -1,11 +1,11 @@
 import {FC} from 'react';
 import {Text, View} from 'react-native';
-import {Image, TouchableWithoutFeedback} from 'react-native';
-import {SvgUri} from 'react-native-svg';
+import {Image, Pressable} from 'react-native';
 import {colors} from '../../theme';
+import cardDefault from '../../assets/card.png';
 
 interface ImageCardProps {
-  uri: string;
+  uri?: string;
   title: string;
   width: number;
   height: number;
@@ -17,7 +17,13 @@ export const ImageCard: FC<ImageCardProps> = props => {
   const {uri, width, height, title, style, handleClick = () => {}} = props;
 
   return (
-    <TouchableWithoutFeedback onPress={handleClick}>
+    <Pressable
+      onPress={handleClick}
+      style={({pressed}) => [
+        {
+          filter: pressed ? 'grayscale(50%)' : '',
+        },
+      ]}>
       <View style={{flexDirection: 'column', ...style}}>
         {!!uri ? (
           <Image
@@ -28,14 +34,16 @@ export const ImageCard: FC<ImageCardProps> = props => {
             }}
           />
         ) : (
-          <SvgUri
-            width={width + 15}
-            height={height}
-            uri="https://res.cloudinary.com/dlyawnfbk/image/upload/v1698343659/book-cover_ijn21c.svg"
+          <Image
+            source={cardDefault}
+            style={{
+              width,
+              height,
+            }}
           />
         )}
         <Text style={{color: colors.accent, fontSize: 16}}>{title}</Text>
       </View>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 };

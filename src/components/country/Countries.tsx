@@ -3,8 +3,9 @@ import {useTanstackQuery} from '../../hooks';
 import {CountryNest, CountriesProps} from '../../types';
 import {ImageCard} from '../../UI';
 import {colors} from '../../theme';
+import {Header} from '../header';
 
-export const Countries = ({navigation}: CountriesProps) => {
+export const Countries = ({navigation, route}: CountriesProps) => {
   const {data: countries} = useTanstackQuery<CountryNest[]>({
     url: 'countries',
     queryKey: ['countries'],
@@ -19,6 +20,7 @@ export const Countries = ({navigation}: CountriesProps) => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: colors.backgroundMain}}>
+      <Header navigation={navigation} route={route} />
       <FlatList
         data={countries}
         numColumns={2}
