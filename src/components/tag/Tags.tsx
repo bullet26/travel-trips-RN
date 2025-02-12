@@ -1,4 +1,4 @@
-import {SafeAreaView, Text, View} from 'react-native';
+import {ActivityIndicator, SafeAreaView, Text, View} from 'react-native';
 import {Link} from '@react-navigation/native';
 import {TagNest} from '../../types';
 import {useTanstackQuery} from '../../hooks';
@@ -6,7 +6,7 @@ import {colors} from '../../theme';
 import {Tag} from '../../UI';
 
 export const Tags = () => {
-  const {data: tags} = useTanstackQuery<TagNest[]>({
+  const {data: tags, isLoading} = useTanstackQuery<TagNest[]>({
     url: 'tags',
     queryKey: ['tags'],
   });
@@ -20,6 +20,8 @@ export const Tags = () => {
       <Text style={{fontSize: 30, color: colors.accent, textAlign: 'center'}}>
         All tags:
       </Text>
+      {isLoading && <ActivityIndicator size="large" color={colors.accent} />}
+
       <View style={{flexDirection: 'row', columnGap: 15, marginVertical: 10}}>
         {tags?.map(item => (
           <Link key={item.id} screen="Tag" params={{id: item?.id}}>

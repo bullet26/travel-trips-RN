@@ -1,4 +1,10 @@
-import {FlatList, SafeAreaView, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  SafeAreaView,
+  Text,
+  View,
+} from 'react-native';
 import {CityNest, CityProps} from '../../types';
 import {useTanstackQuery} from '../../hooks';
 import {colors} from '../../theme';
@@ -8,7 +14,7 @@ import {ImageCard, Tag} from '../../UI';
 export const City = ({route, navigation}: CityProps) => {
   const {id} = route?.params;
 
-  const {data: city} = useTanstackQuery<CityNest>({
+  const {data: city, isLoading} = useTanstackQuery<CityNest>({
     url: `cities/${id}`,
     queryKey: ['cities', `${id}`],
   });
@@ -19,6 +25,7 @@ export const City = ({route, navigation}: CityProps) => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: colors.backgroundMain}}>
+      {isLoading && <ActivityIndicator size="large" color={colors.accent} />}
       {city && (
         <View>
           <Text

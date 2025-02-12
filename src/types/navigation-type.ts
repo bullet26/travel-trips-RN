@@ -1,13 +1,12 @@
-import {
-  NativeStackNavigationProp,
-  NativeStackScreenProps,
-} from '@react-navigation/native-stack';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 export type RootStackParamList = {
   CountryNavigation: {screen: string; params: {id: string | number}};
   Trips: undefined;
+  Trip: {id: string | number};
   Countries: undefined;
   Wishlists: undefined;
+  Wishlist: {id: string | number};
 };
 
 export type UnauthParamList = {
@@ -51,5 +50,29 @@ export type TagsProps = NativeStackScreenProps<CountryStackParamList, 'Tags'>;
 export type TagProps = NativeStackScreenProps<
   CountryStackParamList,
   'Tag',
+  'id'
+>;
+
+export type TripsProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Trips',
+  'id'
+>;
+
+export type TripProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Trip',
+  'id'
+>;
+
+export type WishlistsProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Wishlists',
+  'id'
+>;
+
+export type WishlistProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Wishlist',
   'id'
 >;

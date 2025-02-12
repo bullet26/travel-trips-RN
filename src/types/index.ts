@@ -68,4 +68,8 @@ export {
   type PlaceProps,
   type TagsProps,
   type TagProps,
+  type TripsProps,
+  type TripProps,
+  type WishlistsProps,
+  type WishlistProps,
 } from './navigation-type';

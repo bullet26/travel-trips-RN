@@ -2,7 +2,15 @@ import {useEffect} from 'react';
 import {Linking} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
-import {Countries, Trips, Wishlists, Login, Registration} from '../components';
+import {
+  Countries,
+  Trips,
+  Wishlists,
+  Login,
+  Registration,
+  Trip,
+  Wishlist,
+} from '../components';
 import {colors} from '../theme';
 import {RootStackParamList, UnauthParamList} from '../types';
 import {useContextActions, useContextValues} from '../hooks';
@@ -90,6 +98,16 @@ export const TabNavigation = () => {
           ),
           headerShown: false,
         }}
+      />
+      <Tab.Screen
+        name="Trip" // чтобы пробросить дочерний роут
+        component={Trip}
+        options={{tabBarItemStyle: {display: 'none'}, headerShown: false}}
+      />
+      <Tab.Screen
+        name="Wishlist" // чтобы пробросить дочерний роут
+        component={Wishlist}
+        options={{tabBarItemStyle: {display: 'none'}, headerShown: false}}
       />
     </Tab.Navigator>
   ) : (

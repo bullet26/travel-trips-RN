@@ -1,4 +1,10 @@
-import {FlatList, SafeAreaView, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  SafeAreaView,
+  Text,
+  View,
+} from 'react-native';
 import {Link} from '@react-navigation/native';
 import {colors} from '../../theme';
 import {useTanstackQuery} from '../../hooks';
@@ -8,7 +14,7 @@ import {ImageCard, Tag as TagElement} from '../../UI';
 export const Tag = ({route, navigation}: TagProps) => {
   const {id} = route?.params;
 
-  const {data: tag} = useTanstackQuery<TagNest>({
+  const {data: tag, isLoading} = useTanstackQuery<TagNest>({
     url: `tags/${id}`,
     queryKey: ['tags', `${id}`],
   });
@@ -23,6 +29,8 @@ export const Tag = ({route, navigation}: TagProps) => {
         flex: 1,
         backgroundColor: colors.backgroundMain,
       }}>
+      {isLoading && <ActivityIndicator size="large" color={colors.accent} />}
+
       {tag && (
         <View>
           <View

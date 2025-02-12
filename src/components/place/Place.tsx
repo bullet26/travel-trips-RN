@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Linking,
   Platform,
   SafeAreaView,
@@ -21,7 +22,7 @@ export const Place = ({route}: PlaceProps) => {
 
   const [isCopied, setCopyStatus] = useState(false);
 
-  const {data: place} = useTanstackQuery<PlaceNest>({
+  const {data: place, isLoading} = useTanstackQuery<PlaceNest>({
     url: `places/${id}`,
     queryKey: ['places', `${id}`],
   });
@@ -52,6 +53,8 @@ export const Place = ({route}: PlaceProps) => {
         flex: 1,
         backgroundColor: colors.backgroundMain,
       }}>
+      {isLoading && <ActivityIndicator size="large" color={colors.accent} />}
+
       {place && (
         <View>
           <Text

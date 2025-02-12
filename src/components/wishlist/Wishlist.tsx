@@ -1,37 +1,42 @@
-import {ActivityIndicator, FlatList, SafeAreaView} from 'react-native';
+import {ActivityIndicator, FlatList, SafeAreaView, Text} from 'react-native';
 import {useTanstackQuery} from '../../hooks';
-import {CountryNest, CountriesProps} from '../../types';
-import {ImageCard} from '../../UI';
+import {WishlistNest, WishlistProps} from '../../types';
 import {colors} from '../../theme';
-import {Header} from '../header';
+import {ImageCard} from '../../UI';
 
-export const Countries = ({navigation, route}: CountriesProps) => {
-  const {data: countries, isLoading} = useTanstackQuery<CountryNest[]>({
-    url: 'countries',
-    queryKey: ['countries'],
+export const Wishlist = ({route, navigation}: WishlistProps) => {
+  const {id} = route?.params;
+
+  const {data: wishlist, isLoading} = useTanstackQuery<WishlistNest>({
+    url: `wishlists/${id}`,
+    queryKey: ['wishlists', `${id}`],
   });
 
   const handleClick = (id: number) => {
     navigation.navigate('CountryNavigation', {
-      screen: 'Country',
+      screen: 'Place',
       params: {id},
     });
   };
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: colors.backgroundMain}}>
-      <Header navigation={navigation} route={route} />
       {isLoading && <ActivityIndicator size="large" color={colors.accent} />}
+
+      <Text style={{color: colors.accent, textAlign: 'center', fontSize: 20}}>
+        {wishlist?.title}
+      </Text>
       <FlatList
-        data={countries}
-        numColumns={2}
+        data={wishlist?.places}
+        numColumns={3}
         horizontal={false}
+        style={{paddingTop: 10}}
         columnWrapperStyle={{marginBottom: 10}}
         renderItem={({item}) => (
           <ImageCard
             uri={item.images?.at(0)?.url}
-            width={180}
-            height={300}
+            width={110}
+            height={150}
             style={{marginRight: 5, marginLeft: 10}}
             title={item.name}
             handleClick={() => handleClick(item.id)}
