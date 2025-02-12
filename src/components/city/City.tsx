@@ -27,7 +27,7 @@ export const City = ({route, navigation}: CityProps) => {
     <SafeAreaView style={{flex: 1, backgroundColor: colors.backgroundMain}}>
       {isLoading && <ActivityIndicator size="large" color={colors.accent} />}
       {city && (
-        <View>
+        <View style={{flex: 1}}>
           <Text
             style={{color: colors.accent, fontSize: 25, textAlign: 'center'}}>
             {city.name},&nbsp;&nbsp;

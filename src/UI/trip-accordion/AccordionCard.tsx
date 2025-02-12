@@ -1,18 +1,25 @@
 import {useEffect} from 'react';
+import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 import {useTanstackLazyQuery} from '../../hooks';
 import {TripDayNest, TripProps, UnassignedPlacesNest} from '../../types';
-import {ActivityIndicator, FlatList, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import {colors} from '../../theme';
 import {ImageCard} from '../image-card';
+import {openGoogleMaps} from './utils';
 
 interface AccordionCardProps {
   id: number;
   type: 'up' | 'td';
-  //   navigation: TripProps;
+  navigation: TripProps;
 }
 
 export const AccordionCard = (props: AccordionCardProps) => {
-  const {id, type} = props;
+  const {id, type, navigation} = props;
 
   const [triggerTripDay, {data: tdData, isLoading: isLoadingTripDay}] =
     useTanstackLazyQuery<TripDayNest, number>({
@@ -33,48 +40,57 @@ export const AccordionCard = (props: AccordionCardProps) => {
   }, []);
 
   const handleClick = (id: number) => {
-    // navigation.navigate('CountryNavigation', {
-    //   screen: 'Place',
-    //   params: {id},
-    // });
+    navigation.navigation.navigate('CountryNavigation', {
+      screen: 'Place',
+      params: {id},
+    });
   };
 
-  let isLoading;
-  let places;
-
-  if (type === 'up') {
-    isLoading = isLoadingUp;
-    places = upData?.places || [];
-  } else if (type === 'td') {
-    isLoading = isLoadingTripDay;
-    places = tdData?.places || [];
-  }
-
-  console.log(places, type, id);
+  const places = type === 'td' ? tdData?.places : upData?.places;
 
   return (
     <View>
-      {isLoading && <ActivityIndicator size="large" color={colors.accent} />}
-      <FlatList
-        data={places}
-        numColumns={3}
-        horizontal={false}
-        style={{paddingTop: 10}}
-        columnWrapperStyle={{marginBottom: 10}}
-        renderItem={({item}) => (
+      {places?.length && (
+        <TouchableWithoutFeedback onPress={() => openGoogleMaps(places)}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              alignItems: 'center',
+              marginBottom: 10,
+            }}>
+            <Text style={{color: colors.light, fontSize: 18}}>
+              Open in Google Map
+            </Text>
+            <Text>
+              <FontAwesome6
+                name="location-dot"
+                iconStyle="solid"
+                size={40}
+                color={colors.primary}
+              />
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+      )}
+
+      <View style={{flexDirection: 'row', flexWrap: 'wrap', rowGap: 7}}>
+        {(isLoadingUp || isLoadingTripDay) && (
+          <ActivityIndicator size="large" color={colors.accent} />
+        )}
+
+        {places?.map(item => (
           <ImageCard
+            key={item.id}
             uri={item.images?.at(0)?.url}
-            width={110}
-            height={150}
+            width={85}
+            height={120}
             style={{marginRight: 5, marginLeft: 10}}
             title={item.name}
             handleClick={() => handleClick(item.id)}
           />
-        )}
-        keyExtractor={(item, index) => item.id.toString() || index.toString()}
-        onEndReached={() => console.log('onEndReached')}
-        onEndReachedThreshold={0.5}
-      />
+        ))}
+      </View>
     </View>
   );
 };

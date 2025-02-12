@@ -91,12 +91,14 @@ export const Place = ({route}: PlaceProps) => {
               <Text style={{color: colors.light, fontSize: 18}}>
                 Open in Google Map
               </Text>
-              <FontAwesome6
-                name="location-dot"
-                iconStyle="solid"
-                size={40}
-                color={colors.primary}
-              />
+              <Text>
+                <FontAwesome6
+                  name="location-dot"
+                  iconStyle="solid"
+                  size={40}
+                  color={colors.primary}
+                />
+              </Text>
             </View>
           </TouchableWithoutFeedback>
           <ImageCarousel images={place?.images} />

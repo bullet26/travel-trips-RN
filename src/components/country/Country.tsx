@@ -25,15 +25,19 @@ export const Country = ({route, navigation}: CountryProps) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: colors.backgroundMain}}>
       {isLoading && <ActivityIndicator size="large" color={colors.accent} />}
-
       {country && (
-        <View>
+        <View style={{flex: 1}}>
           <Text
             style={{color: colors.accent, fontSize: 25, textAlign: 'center'}}>
             {country.name}
           </Text>
           <View
-            style={{flexDirection: 'row', columnGap: 15, marginVertical: 15}}>
+            style={{
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              columnGap: 15,
+              marginVertical: 15,
+            }}>
             {country.translations.map(item => (
               <Tag key={item} text={item} />
             ))}

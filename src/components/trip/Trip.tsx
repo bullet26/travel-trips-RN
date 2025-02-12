@@ -1,10 +1,10 @@
-import {ActivityIndicator, SafeAreaView, Text} from 'react-native';
+import {ActivityIndicator, SafeAreaView, ScrollView, Text} from 'react-native';
 import {useTanstackQuery} from '../../hooks';
 import {TripProps, TripsNest} from '../../types';
 import {colors} from '../../theme';
 import {TripDaysAccordion} from '../../UI';
 
-export const Trip = ({route}: TripProps) => {
+export const Trip = ({route, navigation}: TripProps) => {
   const {id} = route?.params;
 
   const {data: trip, isLoading} = useTanstackQuery<TripsNest>({
@@ -15,14 +15,16 @@ export const Trip = ({route}: TripProps) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: colors.backgroundMain}}>
       {isLoading && <ActivityIndicator size="large" color={colors.accent} />}
-
-      <Text style={{color: colors.accent, textAlign: 'center', fontSize: 20}}>
-        {trip?.title}
-      </Text>
-      <TripDaysAccordion
-        unassignedPlacesId={trip?.unassignedPlaces.id || 0}
-        tripDays={trip?.tripDays || []}
-      />
+      <ScrollView contentContainerStyle={{flexGrow: 1, paddingBottom: 20}}>
+        <Text style={{color: colors.accent, textAlign: 'center', fontSize: 20}}>
+          {trip?.title}
+        </Text>
+        <TripDaysAccordion
+          unassignedPlacesId={trip?.unassignedPlaces.id || 0}
+          tripDays={trip?.tripDays || []}
+          navigation={{navigation, route}}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 };
