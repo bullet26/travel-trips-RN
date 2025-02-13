@@ -1,5 +1,5 @@
 import {FC} from 'react';
-import {Text, View} from 'react-native';
+import {StyleProp, Text, View, ViewStyle} from 'react-native';
 import {Image, Pressable} from 'react-native';
 import {colors} from '../../theme';
 import cardDefault from '../../assets/card.png';
@@ -9,7 +9,7 @@ interface ImageCardProps {
   title: string;
   width: number;
   height: number;
-  style?: {[x: string]: string | number};
+  style?: StyleProp<ViewStyle>;
   handleClick?: () => void;
 }
 
@@ -24,7 +24,7 @@ export const ImageCard: FC<ImageCardProps> = props => {
           filter: pressed ? 'grayscale(50%)' : '',
         },
       ]}>
-      <View style={{flexDirection: 'column', ...style}}>
+      <View style={[{flexDirection: 'column'}, style]}>
         {!!uri ? (
           <Image
             source={{uri}}

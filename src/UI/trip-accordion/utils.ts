@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import {PlaceNest} from '../../types';
-import {Linking, Platform} from 'react-native';
+import {Linking} from 'react-native';
 
 export const formatToDateString = (value: string | Date): string => {
   const date = value instanceof Date ? value : new Date(value);
@@ -28,17 +28,9 @@ export const openGoogleMaps = (
 
   const waypoints = coordinates.slice(0, -1)?.join('|');
 
-  let scheme: string;
+  const url = `https://www.google.com/maps/dir/?api=1&origin=My+Location&destination=${destination}${
+    waypoints ? `&waypoints=${waypoints}` : ''
+  }&travelmode=walking`;
 
-  if (Platform.OS === 'android') {
-    scheme = `google.navigation:q=${destination}${
-      waypoints ? `&waypoints=${waypoints}` : ''
-    }&mode=walking`;
-  } else {
-    scheme = `comgooglemaps://?daddr=${destination}${
-      waypoints ? `&waypoints=${waypoints}` : ''
-    }&directionsmode=walking`;
-  }
-
-  Linking.openURL(scheme).catch(err => console.error('Error:', err));
+  Linking.openURL(url).catch(err => console.error('Error:', err));
 };

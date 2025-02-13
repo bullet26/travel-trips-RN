@@ -16,10 +16,11 @@ interface TripDaysAccordionProps {
   unassignedPlacesId: number;
   tripDays: {id: number; date: Date}[];
   navigation: TripProps;
+  isEditMode: boolean;
 }
 
 export const TripDaysAccordion = (props: TripDaysAccordionProps) => {
-  const {unassignedPlacesId, tripDays, navigation} = props;
+  const {unassignedPlacesId, tripDays, navigation, isEditMode} = props;
 
   const [openCollapse, setCollapse] = useState<number[]>([]);
 
@@ -47,6 +48,7 @@ export const TripDaysAccordion = (props: TripDaysAccordionProps) => {
               id={unassignedPlacesId}
               type="up"
               navigation={navigation}
+              isEditMode={isEditMode}
             />
           </View>
         </Collapsible>
@@ -62,7 +64,12 @@ export const TripDaysAccordion = (props: TripDaysAccordionProps) => {
           </TouchableOpacity>
           <Collapsible collapsed={!isExist(item.id)}>
             <View style={styles.content}>
-              <AccordionCard id={item.id} type="td" navigation={navigation} />
+              <AccordionCard
+                id={item.id}
+                type="td"
+                navigation={navigation}
+                isEditMode={isEditMode}
+              />
             </View>
           </Collapsible>
         </View>
@@ -73,7 +80,7 @@ export const TripDaysAccordion = (props: TripDaysAccordionProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
+    marginTop: 10,
     borderWidth: 2,
     borderColor: colors.border,
   },
@@ -89,8 +96,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   content: {
-    paddingHorizontal: 15,
-    paddingBottom: 15,
+    padding: 10,
     backgroundColor: colors.backgroundAccent,
     borderWidth: 2,
     borderColor: colors.border,

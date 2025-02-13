@@ -1,13 +1,14 @@
-import {Pressable, Text} from 'react-native';
+import {Pressable, StyleProp, Text, ViewStyle} from 'react-native';
 import {colors} from '../../../theme';
 
 interface SearchCardProps {
   onPress: () => void;
   text: string;
+  style?: StyleProp<ViewStyle>;
 }
 
 export const SearchCard = (props: SearchCardProps) => {
-  const {onPress, text} = props;
+  const {onPress, text, style} = props;
 
   return (
     <Pressable
@@ -20,6 +21,7 @@ export const SearchCard = (props: SearchCardProps) => {
           borderColor: colors.border,
           borderWidth: 1,
         },
+        style,
       ]}
       onPress={onPress}>
       <Text style={{fontSize: 18, color: colors.light}}>{text}</Text>

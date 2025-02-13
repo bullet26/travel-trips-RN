@@ -12,4 +12,4 @@ export {
 } from './context-provider';
 export {Tag, Tags} from './tag';
 export {Header} from './header';
-export {Search} from './search';
+export {Search, SearchPlacePanel} from './search';

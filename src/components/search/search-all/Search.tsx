@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {FlatList, Pressable, Text, TextInput, View} from 'react-native';
+import {FlatList, TextInput, View} from 'react-native';
 import {useDebounce, useTanstackQuery} from '../../../hooks';
 import {colors} from '../../../theme';
 import {SearchNestResult, SearchType, CountriesProps} from '../../../types';

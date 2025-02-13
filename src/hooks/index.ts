@@ -4,3 +4,5 @@ export {useDebounce} from './useDebounce';
 export {useTanstackLazyQuery} from './useTanstackLazyQuery';
 export {useContextValues} from './useContextValues';
 export {useContextActions} from './useContextActions';
+export {useDeletePlaceCard} from './useDeletePlaceCard';
+export {useMovePlaceCard} from './useMovePlaceCard';
