@@ -2,6 +2,7 @@ import {
   ActivityIndicator,
   Linking,
   Platform,
+  Pressable,
   SafeAreaView,
   Text,
   TouchableOpacity,
@@ -80,7 +81,13 @@ export const Place = ({route}: PlaceProps) => {
             ))}
           </View>
 
-          <TouchableWithoutFeedback onPress={openMaps}>
+          <Pressable
+            onPress={openMaps}
+            style={({pressed}) => [
+              {
+                backgroundColor: pressed ? colors.backgroundAccent : '',
+              },
+            ]}>
             <View
               style={{
                 flexDirection: 'row',
@@ -100,7 +107,7 @@ export const Place = ({route}: PlaceProps) => {
                 />
               </Text>
             </View>
-          </TouchableWithoutFeedback>
+          </Pressable>
           <ImageCarousel images={place?.images} />
           <View
             style={{

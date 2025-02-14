@@ -85,12 +85,16 @@ export const Wishlist = ({route, navigation}: WishlistProps) => {
       {sourceMovePlaceData?.sourceType === 'searchResult' && (
         <Pressable
           onPress={onPressPaste}
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-around',
-            marginVertical: 10,
-          }}>
+          style={({pressed}) => [
+            {
+              backgroundColor: pressed ? colors.backgroundAccent : '',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-around',
+              marginVertical: 10,
+              paddingVertical: 10,
+            },
+          ]}>
           <Text style={{color: colors.light}}> Paste place here</Text>
           <FontAwesome6
             name="paste"
@@ -118,8 +122,8 @@ export const Wishlist = ({route, navigation}: WishlistProps) => {
                 <FontAwesome6
                   name="trash"
                   iconStyle="solid"
-                  style={{textAlign: 'center', marginBottom: 5}}
-                  size={30}
+                  style={{textAlign: 'center', margin: 15}}
+                  size={20}
                   color={colors.light}
                 />
               </Pressable>

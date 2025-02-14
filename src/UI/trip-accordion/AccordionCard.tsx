@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 import {
   useContextActions,
@@ -26,6 +26,8 @@ export const AccordionCard = (props: AccordionCardProps) => {
 
   const {setSourceMovePlaceData: onCutCard} = useContextActions();
   const {sourceMovePlaceData} = useContextValues();
+
+  const [sourceId, setSourceId] = useState<null | number>(null); // for rerender
 
   const [triggerTripDay, {data: tdData, isLoading: isLoadingTripDay}] =
     useTanstackLazyQuery<TripDayNest, number>({
@@ -59,6 +61,16 @@ export const AccordionCard = (props: AccordionCardProps) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (!!sourceMovePlaceData?.sourceId) {
+      setSourceId(sourceMovePlaceData?.sourceId);
+    } else if (sourceMovePlaceData?.sourceType === 'searchResult') {
+      setSourceId(0);
+    } else {
+      setSourceId(null);
+    }
+  }, [sourceMovePlaceData]);
+
   const handleClick = (id: number) => {
     navigation.navigation.navigate('CountryNavigation', {
       screen: 'Place',
@@ -67,8 +79,8 @@ export const AccordionCard = (props: AccordionCardProps) => {
   };
 
   const places = type === 'td' ? tdData?.places : upData?.places;
-
   const isShowMap = !!places?.length && !isEditMode;
+  const isShowPast = isEditMode && sourceId !== null && sourceId !== id;
 
   return (
     <View>
@@ -77,13 +89,22 @@ export const AccordionCard = (props: AccordionCardProps) => {
       )}
 
       {isShowMap && (
-        <Pressable onPress={() => openGoogleMaps(places)}>
+        <Pressable
+          onPress={() => openGoogleMaps(places)}
+          style={({pressed}) => [
+            {
+              backgroundColor: pressed ? colors.backgroundMain : '',
+              marginBottom: 10,
+            },
+          ]}>
           <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-around',
               alignItems: 'center',
-              marginBottom: 10,
+              paddingVertical: 10,
+              borderWidth: 1,
+              borderColor: colors.border,
             }}>
             <Text style={{color: colors.light, fontSize: 18}}>
               Open in Google Map
@@ -98,16 +119,22 @@ export const AccordionCard = (props: AccordionCardProps) => {
         </Pressable>
       )}
 
-      {isEditMode && (
+      {isShowPast && (
         <Pressable
           onPress={onPressPaste}
-          style={{
-            width: '100%',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-around',
-            marginVertical: 10,
-          }}>
+          style={({pressed}) => [
+            {
+              backgroundColor: pressed ? colors.backgroundMain : '',
+              width: '100%',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-around',
+              marginVertical: 10,
+              paddingVertical: 10,
+              borderWidth: 1,
+              borderColor: colors.border,
+            },
+          ]}>
           <Text style={{color: colors.light}}> Paste place here</Text>
           <FontAwesome6
             name="paste"
@@ -125,8 +152,10 @@ export const AccordionCard = (props: AccordionCardProps) => {
               <View
                 style={{
                   flexDirection: 'row',
-                  justifyContent: 'space-around',
+                  justifyContent: 'space-between',
+                  paddingLeft: 5,
                   marginBottom: 5,
+                  width: 90,
                 }}>
                 <Pressable
                   onPress={() =>
@@ -139,7 +168,7 @@ export const AccordionCard = (props: AccordionCardProps) => {
                   <FontAwesome6
                     name="scissors"
                     iconStyle="solid"
-                    size={30}
+                    size={20}
                     color={colors.light}
                   />
                 </Pressable>
@@ -152,7 +181,7 @@ export const AccordionCard = (props: AccordionCardProps) => {
                   <FontAwesome6
                     name="trash"
                     iconStyle="solid"
-                    size={30}
+                    size={20}
                     color={colors.light}
                   />
                 </Pressable>

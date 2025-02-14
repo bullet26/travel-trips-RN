@@ -42,7 +42,7 @@ export const ImageCard: FC<ImageCardProps> = props => {
             }}
           />
         )}
-        <Text style={{color: colors.accent, fontSize: 16}}>{title}</Text>
+        <Text style={{color: colors.accent, fontSize: 16, width}}>{title}</Text>
       </View>
     </Pressable>
   );

@@ -22,11 +22,11 @@ interface TripDaysAccordionProps {
 export const TripDaysAccordion = (props: TripDaysAccordionProps) => {
   const {unassignedPlacesId, tripDays, navigation, isEditMode} = props;
 
-  const [openCollapse, setCollapse] = useState<number[]>([]);
+  const [openCollapse, setCollapse] = useState<string[]>([]);
 
-  const isExist = (id: number) => openCollapse.includes(id);
+  const isExist = (id: string) => openCollapse.includes(id);
 
-  const onPress = (id: number) => {
+  const onPress = (id: string) => {
     if (isExist(id)) {
       setCollapse(prevState => prevState.filter(item => item !== id));
     } else {
@@ -39,10 +39,10 @@ export const TripDaysAccordion = (props: TripDaysAccordionProps) => {
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.header}
-          onPress={() => onPress(unassignedPlacesId)}>
+          onPress={() => onPress(`up_${unassignedPlacesId}`)}>
           <Text style={styles.headerText}>unassigned places</Text>
         </TouchableOpacity>
-        <Collapsible collapsed={!isExist(unassignedPlacesId)}>
+        <Collapsible collapsed={!isExist(`up_${unassignedPlacesId}`)}>
           <View style={styles.content}>
             <AccordionCard
               id={unassignedPlacesId}
@@ -57,12 +57,12 @@ export const TripDaysAccordion = (props: TripDaysAccordionProps) => {
         <View style={styles.container} key={item.id}>
           <TouchableOpacity
             style={styles.header}
-            onPress={() => onPress(item.id)}>
+            onPress={() => onPress(`td_${item.id}`)}>
             <Text style={styles.headerText}>
               {formatToDateString(item.date)}
             </Text>
           </TouchableOpacity>
-          <Collapsible collapsed={!isExist(item.id)}>
+          <Collapsible collapsed={!isExist(`td_${item.id}`)}>
             <View style={styles.content}>
               <AccordionCard
                 id={item.id}
