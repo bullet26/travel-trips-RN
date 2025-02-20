@@ -78,9 +78,6 @@ export const AccordionCard = (props: AccordionCardProps) => {
     });
   };
 
-  console.log(tdData?.places, 'tdData?.places');
-  console.log(upData?.places, 'upData?.places');
-
   const places = type === 'td' ? tdData?.places : upData?.places;
   const isShowMap = !!places?.length && !isEditMode;
   const isShowPast = isEditMode && sourceId !== null && sourceId !== id;
