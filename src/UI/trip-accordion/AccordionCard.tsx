@@ -59,7 +59,7 @@ export const AccordionCard = (props: AccordionCardProps) => {
     } else if (type === 'td') {
       triggerTripDay(Number(id), ['trips-day', `${id}`]);
     }
-  }, []);
+  }, [id, type]);
 
   useEffect(() => {
     if (!!sourceMovePlaceData?.sourceId) {
@@ -78,12 +78,15 @@ export const AccordionCard = (props: AccordionCardProps) => {
     });
   };
 
+  console.log(tdData?.places, 'tdData?.places');
+  console.log(upData?.places, 'upData?.places');
+
   const places = type === 'td' ? tdData?.places : upData?.places;
   const isShowMap = !!places?.length && !isEditMode;
   const isShowPast = isEditMode && sourceId !== null && sourceId !== id;
 
   return (
-    <View>
+    <View style={{minHeight: isShowMap || isShowPast ? 70 : 'auto'}}>
       {(isLoadingUp || isLoadingTripDay) && (
         <ActivityIndicator size="large" color={colors.accent} />
       )}
@@ -133,6 +136,7 @@ export const AccordionCard = (props: AccordionCardProps) => {
               paddingVertical: 10,
               borderWidth: 1,
               borderColor: colors.border,
+              minHeight: 30,
             },
           ]}>
           <Text style={{color: colors.light}}> Paste place here</Text>
