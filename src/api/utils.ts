@@ -31,7 +31,7 @@ export const saveToken = async ({
 
 export const getToken = async () => {
   const atExist = await RNSecureStorage.exist('accessToken');
-  const rtExist = await RNSecureStorage.exist('accessToken');
+  const rtExist = await RNSecureStorage.exist('refreshToken');
   let accessToken = null;
   let refreshToken = null;
 
@@ -47,7 +47,7 @@ export const getToken = async () => {
 
 export const checkTokenValidity = async () => {
   const atExist = await RNSecureStorage.exist('accessToken');
-  const rtExist = await RNSecureStorage.exist('accessToken');
+  const rtExist = await RNSecureStorage.exist('refreshToken');
 
   const accessTokenExpires = await RNSecureStorage.getItem(
     'accessTokenExpires',
