@@ -6,11 +6,12 @@ import {
   SafeAreaView,
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
+import RenderHtml from 'react-native-render-html';
 import {PlaceNest, PlaceProps} from '../../types';
 import {useTanstackQuery} from '../../hooks';
 import {colors} from '../../theme';
@@ -20,6 +21,8 @@ import {useState} from 'react';
 
 export const Place = ({route}: PlaceProps) => {
   const {id} = route?.params;
+
+  const {width} = useWindowDimensions();
 
   const [isCopied, setCopyStatus] = useState(false);
 
@@ -140,10 +143,17 @@ export const Place = ({route}: PlaceProps) => {
               )}
             </TouchableOpacity>
           </View>
-          <Text
-            style={{color: colors.light, fontSize: 16, paddingHorizontal: 15}}>
-            {place.description}
-          </Text>
+          <RenderHtml
+            contentWidth={width}
+            source={{
+              html: place.description,
+            }}
+            baseStyle={{
+              color: colors.light,
+              fontSize: 16,
+              paddingHorizontal: 15,
+            }}
+          />
         </View>
       )}
     </SafeAreaView>

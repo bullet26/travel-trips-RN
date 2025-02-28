@@ -24,6 +24,7 @@
     "react-native": "0.77.0",
     "react-native-collapsible": "^1.6.2",
     "react-native-config": "^1.5.3",
+    "react-native-render-html": "^6.3.4",
     "react-native-safe-area-context": "^5.1.0",
     "react-native-screens": "^4.6.0",
     "react-native-svg": "^15.11.1",
