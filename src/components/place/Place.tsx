@@ -4,6 +4,7 @@ import {
   Platform,
   Pressable,
   SafeAreaView,
+  ScrollView,
   Text,
   TouchableOpacity,
   useWindowDimensions,
@@ -60,7 +61,11 @@ export const Place = ({route}: PlaceProps) => {
       {isLoading && <ActivityIndicator size="large" color={colors.accent} />}
 
       {place && (
-        <View>
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingBottom: 20,
+          }}>
           <Text
             style={{color: colors.accent, fontSize: 25, textAlign: 'center'}}>
             {place.name},&nbsp;&nbsp;
@@ -154,7 +159,7 @@ export const Place = ({route}: PlaceProps) => {
               paddingHorizontal: 15,
             }}
           />
-        </View>
+        </ScrollView>
       )}
     </SafeAreaView>
   );
