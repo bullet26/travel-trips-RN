@@ -38,17 +38,23 @@ export const Trip = ({route, navigation}: TripProps) => {
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
+            paddingTop: 10,
             paddingBottom: 20,
             paddingHorizontal: 15,
           }}>
           <View
             style={{
               flexDirection: 'row',
-              justifyContent: 'space-around',
+              justifyContent: 'space-between',
               alignItems: 'center',
             }}>
             <Text
-              style={{color: colors.accent, textAlign: 'center', fontSize: 20}}>
+              style={{
+                color: colors.accent,
+                textAlign: 'center',
+                fontSize: 20,
+                flex: 1,
+              }}>
               {trip?.title}
             </Text>
             <Pressable onPress={setEditMode}>

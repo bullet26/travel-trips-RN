@@ -1,5 +1,11 @@
 import {useEffect} from 'react';
-import {SafeAreaView, FlatList, ActivityIndicator} from 'react-native';
+import {
+  SafeAreaView,
+  FlatList,
+  ActivityIndicator,
+  Pressable,
+  Text,
+} from 'react-native';
 import {colors} from '../../theme';
 import {ImageCard} from '../../UI';
 import {useTanstackLazyQuery, useTanstackQuery} from '../../hooks';
@@ -39,19 +45,31 @@ export const Trips = ({navigation}: TripsProps) => {
 
       <FlatList
         data={trips}
-        numColumns={2}
+        numColumns={1}
         horizontal={false}
         style={{paddingTop: 10}}
-        columnWrapperStyle={{marginBottom: 10}}
         renderItem={({item}) => (
-          <ImageCard
-            uri={item.images?.at(0)?.url}
-            width={180}
-            height={315}
-            style={{marginRight: 5, marginLeft: 10}}
-            title={item.title}
-            handleClick={() => handleClick(item.id)}
-          />
+          <Pressable
+            onPress={() => handleClick(item.id)}
+            style={({pressed}) => [
+              {
+                marginRight: 5,
+                marginLeft: 10,
+                padding: 10,
+                backgroundColor: pressed ? colors.backgroundAccent : '',
+              },
+            ]}>
+            <Text
+              style={{
+                color:
+                  new Date(item.finishDate).getFullYear() ===
+                  new Date().getFullYear()
+                    ? colors.accent
+                    : colors.light,
+              }}>
+              {item.title}
+            </Text>
+          </Pressable>
         )}
         keyExtractor={(item, index) => item.id.toString() || index.toString()}
         onEndReached={() => console.log('onEndReached')}

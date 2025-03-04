@@ -1,5 +1,11 @@
 import {useEffect} from 'react';
-import {ActivityIndicator, FlatList, SafeAreaView} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Pressable,
+  SafeAreaView,
+  Text,
+} from 'react-native';
 import {colors} from '../../theme';
 import {UserNestInfo, WishlistNest, WishlistsProps} from '../../types';
 import {useTanstackLazyQuery, useTanstackQuery} from '../../hooks';
@@ -38,18 +44,22 @@ export const Wishlists = ({navigation}: WishlistsProps) => {
       )}
       <FlatList
         data={wishlists}
-        numColumns={2}
+        numColumns={1}
         horizontal={false}
         style={{paddingTop: 10}}
-        columnWrapperStyle={{marginBottom: 10}}
         renderItem={({item}) => (
-          <ImageCard
-            width={180}
-            height={315}
-            style={{marginRight: 5, marginLeft: 10}}
-            title={item.title}
-            handleClick={() => handleClick(item.id)}
-          />
+          <Pressable
+            onPress={() => handleClick(item.id)}
+            style={({pressed}) => [
+              {
+                marginRight: 5,
+                marginLeft: 10,
+                padding: 10,
+                backgroundColor: pressed ? colors.backgroundAccent : '',
+              },
+            ]}>
+            <Text style={{color: colors.light}}>{item.title}</Text>
+          </Pressable>
         )}
         keyExtractor={(item, index) => item.id.toString() || index.toString()}
         onEndReached={() => console.log('onEndReached')}

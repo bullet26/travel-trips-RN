@@ -121,13 +121,14 @@ export const Place = ({route}: PlaceProps) => {
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
+              // flexWrap: 'wrap',
               alignItems: 'center',
-              paddingHorizontal: 15,
+              paddingHorizontal: 10,
             }}>
             <Text style={{color: colors.light, fontSize: 18}}>
               Address:&nbsp;&nbsp;
             </Text>
-            <Text style={{color: colors.light, fontSize: 16}}>
+            <Text style={{color: colors.light, fontSize: 16, flex: 1}}>
               {place.address}
             </Text>
             <TouchableOpacity onPress={copyToClipboard}>
