@@ -1,6 +1,12 @@
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import {PlaceNest} from '../../types';
 import {Linking} from 'react-native';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+const TZ = 'Europe/Kyiv';
 
 export const formatToDateString = (value: string | Date): string => {
   const date = value instanceof Date ? value : new Date(value);
@@ -9,7 +15,7 @@ export const formatToDateString = (value: string | Date): string => {
     console.error('Invalid date provided');
   }
 
-  return dayjs(date).format('DD MMMM, YYYY');
+  return dayjs(date).tz(TZ).format('DD MMMM, YYYY');
 };
 
 export const openGoogleMaps = (
