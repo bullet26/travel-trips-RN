@@ -1,20 +1,17 @@
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import {formatInTimeZone} from 'date-fns-tz';
 import {PlaceNest} from '../../types';
 import {Linking} from 'react-native';
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
 const TZ = 'Europe/Kyiv';
 
 export const formatToDateString = (value: string | Date): string => {
-  if (!dayjs(value).isValid()) {
+  if (isNaN(new Date(value).getTime())) {
     console.error('Invalid date provided', value);
     return 'unknown';
   }
+  const date = new Date(value);
 
-  return dayjs.utc(value).tz(TZ).format('DD MMMM, YYYY');
+  return formatInTimeZone(date, TZ, 'dd MMMM, yyyy');
 };
 
 export const openGoogleMaps = (

@@ -7,7 +7,6 @@ import {
   Text,
 } from 'react-native';
 import {colors} from '../../theme';
-import {ImageCard} from '../../UI';
 import {useTanstackLazyQuery, useTanstackQuery} from '../../hooks';
 import {TripsNest, TripsProps, UserNestInfo} from '../../types';
 
